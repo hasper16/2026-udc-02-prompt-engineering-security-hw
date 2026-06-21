@@ -79,5 +79,6 @@ export function applyDiscount(cents: number, percent: number): number {
   if (!Number.isFinite(percent) || percent < 0 || percent > 100) {
     throw new Error(`percent must be a finite number in [0, 100], got: ${percent}`);
   }
-  return Math.round(cents * (1 - percent / 100));
+  // Multiply before dividing: exact for integer percent, single rounding to cents.
+  return Math.round((cents * (100 - percent)) / 100);
 }

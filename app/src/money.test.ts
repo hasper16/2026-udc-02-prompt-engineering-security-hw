@@ -12,7 +12,7 @@ describe("formatCents", () => {
   });
 
   it("throws on non-integer cents", () => {
-    expect(() => formatCents(150.7)).toThrow();
+    expect(() => formatCents(150.7)).toThrow(/cents must be an integer/);
   });
 });
 
@@ -45,13 +45,13 @@ describe("splitEvenly", () => {
   });
 
   it("throws on non-positive or non-integer n", () => {
-    expect(() => splitEvenly(100, 0)).toThrow();
-    expect(() => splitEvenly(100, -2)).toThrow();
-    expect(() => splitEvenly(100, 2.5)).toThrow();
+    expect(() => splitEvenly(100, 0)).toThrow(/n must be a positive integer/);
+    expect(() => splitEvenly(100, -2)).toThrow(/n must be a positive integer/);
+    expect(() => splitEvenly(100, 2.5)).toThrow(/n must be a positive integer/);
   });
 
   it("throws on non-integer totalCents", () => {
-    expect(() => splitEvenly(100.5, 3)).toThrow();
+    expect(() => splitEvenly(100.5, 3)).toThrow(/totalCents must be an integer/);
   });
 });
 
@@ -66,12 +66,12 @@ describe("applyDiscount", () => {
   });
 
   it("throws on out-of-range or non-finite percent", () => {
-    expect(() => applyDiscount(10000, -1)).toThrow();
-    expect(() => applyDiscount(10000, 101)).toThrow();
-    expect(() => applyDiscount(10000, NaN)).toThrow();
+    expect(() => applyDiscount(10000, -1)).toThrow(/percent must be a finite number/);
+    expect(() => applyDiscount(10000, 101)).toThrow(/percent must be a finite number/);
+    expect(() => applyDiscount(10000, NaN)).toThrow(/percent must be a finite number/);
   });
 
   it("throws on non-integer cents", () => {
-    expect(() => applyDiscount(150.7, 10)).toThrow();
+    expect(() => applyDiscount(150.7, 10)).toThrow(/cents must be an integer/);
   });
 });
