@@ -24,27 +24,29 @@ amount.
 
 ## Comparison
 
-> Note: the iteration/token figures below are **reasoned estimates** based on the
-> structure of each prompt and typical agent behavior on this task, not a captured
-> run log. To turn them into measured numbers, run both prompts in a fresh chat and
-> record the IDE usage / `/cost` screen.
+> Measurement status (2026-06-21): the previous table used estimates. The repo
+> does **not** contain a captured fresh-chat Prompt A/B transcript or IDE/API
+> `/cost` output, so iteration and output-token numbers are intentionally left
+> unclaimed. Local validation was re-run for the landed `applyDiscount` result:
+> `npm test` passed 13/13, and a temporary Vitest probe passed 3/3 for `0`, `100`,
+> `-1`, `101`, `NaN`, `Infinity`, `-Infinity`, and non-integer cents.
 
 | Criterion | Prompt A (weak) | Prompt B (structured) |
 |---|---|---|
-| Iterations to acceptance | ~3 (had to clarify range, NaN, "don't break happy path", ask for tests) | 1 (got the patch + tests in one pass) |
-| Output tokens (≈) | higher across re-prompts (~3× the back-and-forth) | one focused response |
-| Result quality | guessed the range, often skipped `NaN`/`Infinity`, no boundary tests | handles `<0`, `>100`, non-finite; boundary tests (0, 100, -1, 101, NaN) |
-| Security/validation edits | had to be requested separately | built into the acceptance criteria up front |
-| Scope discipline | tended to also "tidy" nearby code | stayed on `applyDiscount` only |
+| Iterations to acceptance | Not captured in this repo; requires a fresh isolated IDE run. | Not captured; `prompts/add-validation.md` verifies a structured run occurred, but does not record iteration count. |
+| Output tokens | Not captured; no IDE `/cost` or API stats artifact found. | Not captured; no IDE `/cost` or API stats artifact found. |
+| Result quality | Not measured; no baseline output/log is available to judge missed cases. | Measured local result: 13/13 app tests green + 3/3 probe green; no misses in the verified set (`0`, `100`, `-1`, `101`, `NaN`, `±Infinity`, non-integer cents). |
+| Security/validation edits | Not measured; baseline output unavailable. | Verified in current code: rejects out-of-range/non-finite `percent` and non-integer `cents`; preserves valid boundaries. |
+| Scope discipline | Not measured; baseline output unavailable. | Verified current landed code is localized to `app/src/money.ts` and `app/src/money.test.ts`. |
 
 ## Conclusion
 
-The structured prompt paid for itself immediately: one pass instead of ~three,
-with the security-relevant cases (non-finite, out-of-range) and tests specified
-**before** the model started, rather than discovered through follow-ups. The
-biggest difference was on the safety/validation edits — Prompt A treated them as
-optional extras, while Prompt B made them acceptance criteria, so they couldn't be
-skipped. For anything touching correctness or input handling, the up-front
-structure is clearly worth the few extra lines.
+The original hypothesis remains plausible but **not fully validated as an A/B
+measurement** because Prompt A and the IDE/API token telemetry were not captured.
+The measured evidence available in this repo supports the structured prompt's
+landed quality outcome: the current `applyDiscount` implementation passes the
+required boundary and validation checks. To complete the bonus experiment, rerun
+both prompts in fresh chats and record iterations plus IDE `/cost` or API output
+token stats in this table.
 
 
