@@ -65,10 +65,14 @@ describe("applyDiscount", () => {
     expect(applyDiscount(10000, 100)).toBe(0);
   });
 
-  it("throws on out-of-range or non-finite percent", () => {
-    expect(() => applyDiscount(10000, -1)).toThrow(/percent must be a finite number/);
-    expect(() => applyDiscount(10000, 101)).toThrow(/percent must be a finite number/);
-    expect(() => applyDiscount(10000, NaN)).toThrow(/percent must be a finite number/);
+  it("throws on non-integer, out-of-range, or non-finite percent", () => {
+    expect(() => applyDiscount(10000, 12.5)).toThrow(/percent must be an integer/);
+    expect(() => applyDiscount(10000, 33.333)).toThrow(/percent must be an integer/);
+    expect(() => applyDiscount(10000, -1)).toThrow(/percent must be an integer/);
+    expect(() => applyDiscount(10000, 101)).toThrow(/percent must be an integer/);
+    expect(() => applyDiscount(10000, NaN)).toThrow(/percent must be an integer/);
+    expect(() => applyDiscount(10000, Infinity)).toThrow(/percent must be an integer/);
+    expect(() => applyDiscount(10000, -Infinity)).toThrow(/percent must be an integer/);
   });
 
   it("throws on non-integer cents", () => {

@@ -68,16 +68,16 @@ export function splitEvenly(totalCents: number, n: number): number[] {
  * Apply a percentage discount to integer cents, rounding to the nearest cent.
  *
  * @param cents - amount in integer cents
- * @param percent - discount percentage in the inclusive range [0, 100]
+ * @param percent - integer discount percentage in the inclusive range [0, 100]
  * @returns the discounted amount in integer cents
- * @throws {Error} if `cents` is not an integer, or `percent` is not a finite number in [0, 100]
+ * @throws {Error} if `cents` is not an integer, or `percent` is not an integer in [0, 100]
  */
 export function applyDiscount(cents: number, percent: number): number {
   if (!Number.isInteger(cents)) {
     throw new Error(`cents must be an integer, got: ${cents}`);
   }
-  if (!Number.isFinite(percent) || percent < 0 || percent > 100) {
-    throw new Error(`percent must be a finite number in [0, 100], got: ${percent}`);
+  if (!Number.isInteger(percent) || percent < 0 || percent > 100) {
+    throw new Error(`percent must be an integer in [0, 100], got: ${percent}`);
   }
   // Multiply before dividing: exact for integer percent, single rounding to cents.
   return Math.round((cents * (100 - percent)) / 100);
